@@ -73,14 +73,19 @@ public class UserStepdefs {
 
     @When("^the client posts to /users$")
     public void theClientPostsToUsers() throws Throwable {
+
+    }
+
+    @When("^the client posts to /users with a first name: \"([^\"]*)\", last name: \"([^\"]*)\", and birthday : (\\d+)$")
+    public void theClientPostsToUsersWithAAndBirthday(String firstName, String lastName, int birthday) throws Throwable {
         JSONObject mockUser = new JSONObject();
-        mockUser.put("firstName", "Kim");
-        mockUser.put("lastName", "Un");
+        mockUser.put("firstName", firstName);
+        mockUser.put("lastName", lastName);
 
         JSONArray groups = new JSONArray();
 
         mockUser.put("groups", groups);
-        mockUser.put("birthday", 1990);
+        mockUser.put("birthday", birthday);
 
         MockHttpServletRequestBuilder request = post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -91,10 +96,9 @@ public class UserStepdefs {
                 .getResponse();
     }
 
-    @And("^the response has a valid firstName field$")
-    public void theResponseHasAValidFirstNameField() throws Throwable {
-        // Write code here that turns the phrase above into concrete actions
+    @And("^the response has a firstName field matching: \"([^\"]*)\"$")
+    public void theResponseHasAValidFirstNameField(String firstName) throws Throwable {
         JSONObject response = new JSONObject(latestResult.getContentAsString());
-        assertThat(response.get("firstName"), equalTo("Kim"));
+        assertThat(response.get("firstName").toString(), equalTo(firstName));
     }
 }

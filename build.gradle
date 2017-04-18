@@ -29,9 +29,6 @@ dependencies {
     def CUCUMBER_VERSION = "1.2.5"
 
     testCompile('org.springframework.boot:spring-boot-starter-test',
-            "info.cukes:cucumber-core:" + CUCUMBER_VERSION,
-            "info.cukes:cucumber-jvm:" + CUCUMBER_VERSION,
-            "info.cukes:cucumber-java:" + CUCUMBER_VERSION,
             "info.cukes:cucumber-junit:" + CUCUMBER_VERSION,
             "info.cukes:cucumber-spring:" + CUCUMBER_VERSION)
     runtime('mysql:mysql-connector-java')
