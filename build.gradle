@@ -38,5 +38,4 @@ dependencies {
 
     runtime('mysql:mysql-connector-java')
     runtime('com.h2database:h2')
-
 }

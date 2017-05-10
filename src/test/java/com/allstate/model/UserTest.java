@@ -21,27 +21,27 @@ public class UserTest {
 
     }
 
-    @Test
-    public void testCreateUserRadNickName() {
-        String lastName = "Un";
-        String firstName = "Sun";
-        int birthday = 1984;
-
-        User newUser = new User(firstName, lastName, birthday);
-
-        assertThat(newUser.getNickname()).isEqualTo("Rad " + firstName);
-    }
-
-    @Test
-    public void testCreateUserDopeNickName() {
-        String lastName = "Un";
-        String firstName = "Sun";
-        int birthday = 2001;
-
-        User newUser = new User(firstName, lastName, birthday);
-
-        assertThat(newUser.getNickname()).isEqualTo("Dope " + firstName);
-    }
+//    @Test
+//    public void testCreateUserRadNickName() {
+//        String lastName = "Un";
+//        String firstName = "Sun";
+//        int birthday = 1984;
+//
+//        User newUser = new User(firstName, lastName, birthday);
+//
+//        assertThat(newUser.getNickname()).isEqualTo("Rad " + firstName);
+//    }
+//
+//    @Test
+//    public void testCreateUserDopeNickName() {
+//        String lastName = "Un";
+//        String firstName = "Sun";
+//        int birthday = 2001;
+//
+//        User newUser = new User(firstName, lastName, birthday);
+//
+//        assertThat(newUser.getNickname()).isEqualTo("Dope " + firstName);
+//    }
 
 
 

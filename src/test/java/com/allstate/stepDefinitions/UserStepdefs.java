@@ -24,6 +24,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.core.IsEqual.equalTo;
@@ -31,6 +32,7 @@ import static org.junit.Assert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = UserGroupsApplication.class)
 @WebMvcTest(controllers = UsersController.class)
 @AutoConfigureMockMvc(secure = false)
@@ -41,19 +43,36 @@ public class UserStepdefs {
 
     @MockBean
     @Autowired
-    UsersRepository usersRepository;
+    private UsersRepository usersRepository;
+
+//    @Autowired
+//    public void setUsersRepository(UsersRepository usersRepository) {
+//        this.usersRepository = usersRepository;
+//    }
 
     @After
     public void cleanUp() {
-        usersRepository.deleteAll();
+        //usersRepository.deleteAll();
         latestResult = null;
     }
 
     MockHttpServletResponse latestResult;
 
-    @When("^the client calls /users$")
-    public void theClientCallsUsers() throws Throwable {
-        MockHttpServletRequestBuilder request = get("/users");
+    @Transactional
+    @When("^the client calls /users with id (\\d+)$")
+    public void theClientCallsUsersWithId(long userID) throws Throwable {
+        JSONObject mockUser = new JSONObject();
+        mockUser.put("firstName", "Sean");
+        mockUser.put("lastName", "Franklin");
+
+        JSONArray groups = new JSONArray();
+
+        mockUser.put("groups", groups);
+        mockUser.put("birthday", 1991);
+
+        MockHttpServletRequestBuilder request = get("/users/" + userID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(mockUser.toString());
         latestResult = this.mockMvc.perform(request)
                 .andReturn()
                 .getResponse();
@@ -64,18 +83,7 @@ public class UserStepdefs {
         assertThat(latestResult.getStatus(), is(statusCode));
     }
 
-    @And("^the client receives an empty array$")
-    public void theClientReceivesAnEmptyArray() throws Throwable {
-        String response = latestResult.getContentAsString();
-        //JSONArray response = new JSONArray(res);
-        assertThat(response, equalTo(""));
-    }
-
-    @When("^the client posts to /users$")
-    public void theClientPostsToUsers() throws Throwable {
-
-    }
-
+    @Transactional
     @When("^the client posts to /users with a first name: \"([^\"]*)\", last name: \"([^\"]*)\", and birthday : (\\d+)$")
     public void theClientPostsToUsersWithAAndBirthday(String firstName, String lastName, int birthday) throws Throwable {
         JSONObject mockUser = new JSONObject();
@@ -101,4 +109,5 @@ public class UserStepdefs {
         JSONObject response = new JSONObject(latestResult.getContentAsString());
         assertThat(response.get("firstName").toString(), equalTo(firstName));
     }
+
 }

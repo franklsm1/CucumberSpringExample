@@ -1,16 +1,22 @@
 package com.allstate.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedNativeQuery(
+        name = "callGetUserDetail",
+        query = "CALL GET_USER_DETAIL(:userId)",
+        resultClass = User.class
+)
 @Entity
-public class User {
+public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstName, lastName, nickname;
+    private String firstName, lastName;
     private int birthday;
 
     public List<String> getGroups() {
@@ -58,17 +64,17 @@ public class User {
         this.lastName = lastName;
     }
 
-    public String getNickname() {
-        String name ="";
-        switch(birthday) {
-            case 1984: name = "Rad " + firstName;
-                break;
-            case 2001: name = "Dope " + firstName;
-                break;
-        }
-        return name;
-    }
-
+//    public String getNickname() {
+//        String name ="";
+//        switch(birthday) {
+//            case 1984: name = "Rad " + firstName;
+//                break;
+//            case 2001: name = "Dope " + firstName;
+//                break;
+//        }
+//        return name;
+//    }
+//
 //    public void setNickname(String nickname) {
 //        this.nickname = nickname;
 //    }
