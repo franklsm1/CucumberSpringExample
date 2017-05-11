@@ -2,15 +2,17 @@ package com.allstate.stepDefinitions;
 
 import com.allstate.UserGroupsApplication;
 import com.allstate.controller.UsersController;
+import com.allstate.model.User;
 import com.allstate.repository.UsersRepository;
 import cucumber.api.PendingException;
+import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
+import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -19,10 +21,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import static org.hamcrest.Matchers.is;
@@ -32,28 +32,38 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ContextConfiguration(classes = UserGroupsApplication.class)
-@WebMvcTest(controllers = UsersController.class)
-@AutoConfigureMockMvc(secure = false)
+//@WebMvcTest(controllers = UsersController.class)
+//@WebAppConfiguration
+@SpringBootTest
+@AutoConfigureMockMvc
 public class UserStepdefs {
 
     @Autowired
     MockMvc mockMvc;
 
-    @MockBean
     @Autowired
-    UsersRepository usersRepository;
+    private UsersRepository usersRepository;
 
-    @After
-    public void cleanUp() {
-        usersRepository.deleteAll();
+
+    private MockHttpServletResponse latestResult;
+
+    private User user;
+
+    @Before
+    public void cleanUp() throws JSONException {
         latestResult = null;
     }
+    @Given("^a user \"([^\"]*)\" exists in the db$")
+    public void aUserExistsInTheDb(String name) throws Throwable {
+        user = usersRepository.save(new User(name, "Franklin", 1991));
+    }
 
-    MockHttpServletResponse latestResult;
+    @When("^the client calls a GET to users$")
+    public void theClientCallsUsersWithId() throws Throwable {
 
-    @When("^the client calls /users$")
-    public void theClientCallsUsers() throws Throwable {
-        MockHttpServletRequestBuilder request = get("/users");
+        MockHttpServletRequestBuilder request = get("/users/" + user.getId())
+                .contentType(MediaType.APPLICATION_JSON);
+
         latestResult = this.mockMvc.perform(request)
                 .andReturn()
                 .getResponse();
@@ -62,18 +72,6 @@ public class UserStepdefs {
     @Then("^the client receives status code of (\\d+)$")
     public void theClientReceivesStatusCodeOf(int statusCode) throws Throwable {
         assertThat(latestResult.getStatus(), is(statusCode));
-    }
-
-    @And("^the client receives an empty array$")
-    public void theClientReceivesAnEmptyArray() throws Throwable {
-        String response = latestResult.getContentAsString();
-        //JSONArray response = new JSONArray(res);
-        assertThat(response, equalTo(""));
-    }
-
-    @When("^the client posts to /users$")
-    public void theClientPostsToUsers() throws Throwable {
-
     }
 
     @When("^the client posts to /users with a first name: \"([^\"]*)\", last name: \"([^\"]*)\", and birthday : (\\d+)$")

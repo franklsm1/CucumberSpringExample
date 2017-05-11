@@ -7,7 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @RunWith(Cucumber.class)
 @SpringBootTest
-@CucumberOptions(features = "src/test/resources")
+@CucumberOptions(features = "src/test/resources/",
+        glue = {"cucumber.examples.spring.txn","cucumber.api.spring","com.allstate.stepDefinitions"})
 public class CucumberTest {
 
 }
