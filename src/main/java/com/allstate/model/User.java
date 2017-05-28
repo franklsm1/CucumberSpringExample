@@ -1,37 +1,34 @@
 package com.allstate.model;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Entity
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private String firstName, lastName, nickname;
-    private int birthday;
+    @NotNull
+    private String firstName;
 
-    public List<String> getGroups() {
-        return groups;
-    }
+    @NotNull
+    private String lastName;
 
-    public void setGroups(List<String> groups) {
-        this.groups = groups;
-    }
-
-    @ElementCollection(targetClass=String.class)
-    private List<String> groups = new ArrayList<>();
+    @NotNull
+    @Pattern(regexp="[0-9][0-9][0-9][0-9]")
+    private String birthYear;
 
     public User() {
 
     }
 
-    public User(String firstName, String lastName, int birthday) {
+    public User(String firstName, String lastName, String birthYear) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.birthday = birthday;
+        this.birthYear = birthYear;
     }
 
     public Long getId() {
@@ -54,31 +51,13 @@ public class User {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+
+    public String getBirthYear() {
+        return birthYear;
     }
 
-    public String getNickname() {
-        String name ="";
-        switch(birthday) {
-            case 1984: name = "Rad " + firstName;
-                break;
-            case 2001: name = "Dope " + firstName;
-                break;
-        }
-        return name;
-    }
-
-//    public void setNickname(String nickname) {
-//        this.nickname = nickname;
-//    }
-
-    public int getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(int birthday) {
-        this.birthday = birthday;
+    public void setBirthYear(String birthYear) {
+        this.birthYear = birthYear;
     }
 
 }

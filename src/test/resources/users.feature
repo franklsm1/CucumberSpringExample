@@ -1,23 +1,32 @@
 @txn
-Feature: Users can be created, retrieved, and deleted
+Feature: Users creation and retrieval endpoint
+  A user can be created if:
+  * A firstName and lastName field exists
+  * A birthYear field that is an 4 digit number exists
 
-  Scenario Outline: client makes call to POST /users with a first name, last name, and birthday
-    When the client posts to /users with a first name: "<firstName>", last name: "<lastName>", and birthday : <birthday>
-    Then the client receives status code of 200
-    And the response has a firstName field matching: "<firstName>"
 
-    Examples:
-      | firstName | lastName | birthday |
-      | Sean      | Franklin | 1991     |
-      | Todd      | Frank    | 1989     |
-
-  Scenario Outline: client makes call to GET /users with id 1
-    Given a user "<firstName>" exists in the db
-    When the client calls a GET to users
-    Then the client receives status code of <status>
-    And the response has a firstName field matching: "<firstName>"
+  Scenario Outline: client makes a POST request to the users endpoint
+    Given a user with the following fields:
+      | firstName   | lastName   | birthYear   |
+      | <firstName> | <lastName> | <birthYear> |
+    When a POST request to the "/users" endpoint is made with that user
+    Then the response has a status of <status> and a message containing "<message>"
+    And if the <status> is 201 the response has a "user" object with an "id" field
 
     Examples:
-      | firstName | status |
-      | Brett     | 200    |
-      | Todd      | 200    |
+      | firstName | lastName | birthYear | status | message     |
+      | Sean      | Franklin | 1991      | 201    | Created     |
+      | Todd      | Frank    | 00000     | 400    | Bad Request |
+
+  Scenario Outline: client makes a GET request to the users endpoint
+    Given a user exists in the db with the following info:
+      | firstName   | lastName   | birthYear   |
+      | <firstName> | <lastName> | <birthYear> |
+    When the client calls a GET to the "/users" endpoint
+    Then the response has a status of <status> and a message containing "<message>"
+    And if the <status> is 200 the response has a "user" object with an "id" field
+
+    Examples:
+      | firstName | lastName | birthYear | status | message |
+      | Bret      | Palmer   | 1950      | 200    | OK      |
+      | Todd      | Park     | 1975      | 200    | OK      |

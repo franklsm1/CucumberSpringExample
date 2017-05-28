@@ -57,29 +57,28 @@ public class UsersControllerIT {
     public void testCreateUser() throws Exception {
         JSONObject mockUser = new JSONObject();
         mockUser.put("firstName", "Kim");
-        mockUser.put("lastName", "Un");
+        mockUser.put("lastName", "Jones");
 
         JSONArray groups = new JSONArray();
 
-        mockUser.put("groups", groups);
-        mockUser.put("birthday", 1990);
+        mockUser.put("birthYear", "1990");
 
         MockHttpServletRequestBuilder request = post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mockUser.toString());
 
         this.mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", equalTo(mockUser.get("firstName"))))
-                .andExpect(jsonPath("$.lastName", equalTo(mockUser.get("lastName"))));
-//                .andExpect(jsonPath("$.id", equalTo(1)));
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.user.firstName", equalTo(mockUser.get("firstName"))))
+                .andExpect(jsonPath("$.user.lastName", equalTo(mockUser.get("lastName"))))
+                .andExpect(jsonPath("$.user.id").exists());
     }
 
     @Test
     public void testGetOneUser() throws Exception {
-        String lastName = "Un";
+        String lastName = "Moon";
         String firstName = "Sun";
-        int birthday = 1984;
+        String birthday = "1984";
 
         User newUser = new User(firstName, lastName, birthday);
 
@@ -89,7 +88,7 @@ public class UsersControllerIT {
 
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.firstName", equalTo(newUser.getFirstName())))
-                .andExpect(jsonPath("$.lastName", equalTo(newUser.getLastName())));
+                .andExpect(jsonPath("$.user.firstName", equalTo(newUser.getFirstName())))
+                .andExpect(jsonPath("$.user.lastName", equalTo(newUser.getLastName())));
     }
 }
