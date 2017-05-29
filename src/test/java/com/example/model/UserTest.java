@@ -1,4 +1,4 @@
-package com.allstate.model;
+package com.example.model;
 
 import org.junit.Test;
 

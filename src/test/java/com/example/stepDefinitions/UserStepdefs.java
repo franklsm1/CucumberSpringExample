@@ -1,11 +1,9 @@
-package com.allstate.stepDefinitions;
+package com.example.stepDefinitions;
 
-import com.allstate.UserGroupsApplication;
-import com.allstate.model.User;
-import com.allstate.repository.UsersRepository;
+import com.example.UserGroupsApplication;
+import com.example.model.User;
+import com.example.repository.UsersRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import cucumber.api.PendingException;
-import cucumber.api.Transpose;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
@@ -24,7 +22,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.util.List;
 
-import static java.util.Objects.isNull;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;

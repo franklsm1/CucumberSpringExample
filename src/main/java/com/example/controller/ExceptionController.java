@@ -1,6 +1,6 @@
-package com.allstate.controller;
+package com.example.controller;
 
-import com.allstate.model.ErrorResponse;
+import com.example.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;

@@ -1,9 +1,9 @@
-package com.allstate.controller;
+package com.example.controller;
 
 
-import com.allstate.model.User;
-import com.allstate.model.UserResponse;
-import com.allstate.repository.UsersRepository;
+import com.example.model.User;
+import com.example.model.UserResponse;
+import com.example.repository.UsersRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

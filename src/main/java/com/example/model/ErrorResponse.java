@@ -1,4 +1,4 @@
-package com.allstate.model;
+package com.example.model;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
