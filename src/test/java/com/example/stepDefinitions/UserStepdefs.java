@@ -10,6 +10,7 @@ import cucumber.api.java.en.And;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
@@ -44,6 +44,7 @@ public class UserStepdefs {
 
     private MockHttpServletResponse latestResult;
     private JSONObject jsonResult;
+    private JSONArray jsonArrayResult;
     private UserRequest user;
     private long newId;
 
@@ -91,7 +92,12 @@ public class UserStepdefs {
         newId = newUser.getId();
     }
 
-    @When("^the client calls a GET to the \"([^\"]*)\" endpoint$")
+    @Given("^users exists in the db with the following info:")
+    public void usersExistsInTheDb(List<UserRequest> users) throws Throwable {
+        users.forEach( user -> usersService.save(user));
+    }
+
+    @When("^the client calls a GET to the \"([^\"]*)\" endpoint with a userId$")
     public void theClientCallsGetUsersWithId(String route) throws Throwable {
         MockHttpServletRequestBuilder request = get(route + "/" + newId)
                 .contentType(MediaType.APPLICATION_JSON);
@@ -101,5 +107,22 @@ public class UserStepdefs {
                 .getResponse();
 
         jsonResult = new JSONObject(latestResult.getContentAsString());
+    }
+
+    @When("^the client calls a GET to the \"([^\"]*)\" endpoint$")
+    public void theClientCallsGetAllUsers(String route) throws Throwable {
+        MockHttpServletRequestBuilder request = get(route)
+                .contentType(MediaType.APPLICATION_JSON);
+
+        latestResult = this.mockMvc.perform(request)
+                .andReturn()
+                .getResponse();
+
+        jsonArrayResult = new JSONArray(latestResult.getContentAsString());
+    }
+
+    @And("^the response is an array with length (\\d+)$")
+    public void theResponseIsAnArrayWithLength(int expectedSize) throws Throwable {
+            assertEquals(expectedSize, jsonArrayResult.length());
     }
 }
