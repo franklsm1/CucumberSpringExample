@@ -2,7 +2,8 @@ package com.example.stepDefinitions;
 
 import com.example.UserGroupsApplication;
 import com.example.model.User;
-import com.example.repository.UsersRepository;
+import com.example.model.UserRequest;
+import com.example.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
 import cucumber.api.java.en.And;
@@ -37,13 +38,14 @@ public class UserStepdefs {
     private MockMvc mockMvc;
 
     @Autowired
-    private UsersRepository usersRepository;
+    private UserService usersService;
 
     private final ObjectMapper OBJ_MAPPER = new ObjectMapper();
 
     private MockHttpServletResponse latestResult;
     private JSONObject jsonResult;
-    private User user;
+    private UserRequest user;
+    private long newId;
 
     @Before
     public void cleanUp() throws JSONException {
@@ -51,7 +53,7 @@ public class UserStepdefs {
     }
 
     @Given("^a user with the following fields:$")
-    public void aUserWithTheFollowingFields(List<User> users) {
+    public void aUserWithTheFollowingFields(List<UserRequest> users) {
         this.user = users.get(0);
     }
 
@@ -86,14 +88,15 @@ public class UserStepdefs {
     }
 
     @Given("^a user exists in the db with the following info:")
-    public void aUserExistsInTheDb(List<User> users) throws Throwable {
+    public void aUserExistsInTheDb(List<UserRequest> users) throws Throwable {
         user = users.get(0);
-        usersRepository.save(user);
+        User newUser = usersService.save(user);
+        newId = newUser.getId();
     }
 
     @When("^the client calls a GET to the \"([^\"]*)\" endpoint$")
-    public void theClientCallsUsersWithId(String route) throws Throwable {
-        MockHttpServletRequestBuilder request = get(route + "/" + user.getId())
+    public void theClientCallsGetUsersWithId(String route) throws Throwable {
+        MockHttpServletRequestBuilder request = get(route + "/" + newId)
                 .contentType(MediaType.APPLICATION_JSON);
 
         latestResult = this.mockMvc.perform(request)

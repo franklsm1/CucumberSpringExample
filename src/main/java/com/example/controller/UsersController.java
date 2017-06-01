@@ -2,8 +2,9 @@ package com.example.controller;
 
 
 import com.example.model.User;
+import com.example.model.UserRequest;
 import com.example.model.UserResponse;
-import com.example.repository.UsersRepository;
+import com.example.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,35 +14,28 @@ import javax.validation.Valid;
 @RequestMapping("/users")
 public class UsersController  extends ExceptionController{
 
-    private final UsersRepository usersRepository;
+    private final UserService userService;
 
-    public UsersController(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
+    public UsersController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("")
-    public Iterable<User> findAllUsers(){
-        return this.usersRepository.findAll();
-    }
-
-    @ResponseStatus(value = HttpStatus.CREATED)
-    @PostMapping("")
-    public UserResponse createUser(@Valid @RequestBody User user){
-//        if (errors.hasErrors()){
-//            UserResponse response = new UserResponse();
-//            response.setStatus(HttpStatus.BAD_REQUEST.value());
-//            response.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
-//            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//        }
-
-        this.usersRepository.save(user);
-        return new UserResponse(user, HttpStatus.CREATED);
+    public Iterable<User> getAllUsers(){
+        return this.userService.findAll();
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/{userId}")
     public UserResponse getUser(@PathVariable long userId) {
-        User user =  usersRepository.findOne(userId);
+        User user =  userService.findOne(userId);
         return new UserResponse(user, HttpStatus.OK);
+    }
+
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @PostMapping("")
+    public UserResponse postUser(@Valid @RequestBody UserRequest user){
+        User newUser = this.userService.save(user);
+        return new UserResponse(newUser, HttpStatus.CREATED);
     }
 }

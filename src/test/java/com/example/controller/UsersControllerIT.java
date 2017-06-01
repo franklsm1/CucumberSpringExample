@@ -2,8 +2,9 @@ package com.example.controller;
 
 
 import com.example.model.User;
+import com.example.model.UserRequest;
 import com.example.repository.UsersRepository;
-import org.json.JSONArray;
+import com.example.service.UserService;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Test;
@@ -29,6 +30,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class UsersControllerIT {
 
     @Autowired
+    UserService userService;
+
+    @Autowired
     UsersRepository usersRepository;
 
     @Autowired
@@ -36,7 +40,7 @@ public class UsersControllerIT {
 
     @After
     public void cleanUp(){
-        usersRepository.deleteAll();
+        userService.deleteAll();
     }
 
     @Test
@@ -53,9 +57,6 @@ public class UsersControllerIT {
         JSONObject mockUser = new JSONObject();
         mockUser.put("firstName", "Kim");
         mockUser.put("lastName", "Jones");
-
-        JSONArray groups = new JSONArray();
-
         mockUser.put("birthYear", "1990");
 
         MockHttpServletRequestBuilder request = post("/users")
@@ -75,15 +76,16 @@ public class UsersControllerIT {
         String firstName = "Sun";
         String birthday = "1984";
 
-        User newUser = new User(firstName, lastName, birthday);
+        UserRequest user = new UserRequest(firstName, lastName, birthday);
 
-        usersRepository.save(newUser);
+        User newUser = userService.save(user);
 
         MockHttpServletRequestBuilder request = get("/users/" + newUser.getId());
 
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.user.firstName", equalTo(newUser.getFirstName())))
-                .andExpect(jsonPath("$.user.lastName", equalTo(newUser.getLastName())));
+                .andExpect(jsonPath("$.user.lastName", equalTo(newUser.getLastName())))
+                .andExpect(jsonPath("$.user.birthYear", equalTo(newUser.getBirthYear())));
     }
 }
