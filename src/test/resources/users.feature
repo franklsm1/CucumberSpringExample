@@ -18,7 +18,7 @@ Feature: Users creation and retrieval endpoint
       | Todd      | Frank    | 00000     | 400    |
 
   Scenario Outline: client makes a GET request to the users endpoint with a userId
-    Given a user exists in the db with the following info:
+    Given a user exists in the db with the following info if valid:
       | firstName   | lastName   | birthYear   |
       | <firstName> | <lastName> | <birthYear> |
     When the client calls a GET to the "/users" endpoint with a userId
@@ -29,6 +29,7 @@ Feature: Users creation and retrieval endpoint
       | firstName | lastName | birthYear | status |
       | Bret      | Palmer   | 1950      | 200    |
       | Todd      | Park     | 1975      | 200    |
+      |           |          |           | 204    |
 
   Scenario: client makes a GET request to the users endpoint
     Given users exists in the db with the following info:

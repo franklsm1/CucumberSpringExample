@@ -6,9 +6,12 @@ import com.example.model.UserRequest;
 import com.example.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static java.util.Objects.isNull;
 
 @RestController
 @RequestMapping("/users")
@@ -23,14 +26,18 @@ public class UsersController extends ExceptionController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("")
     @ApiOperation(value = "Return all users.", response = User.class, responseContainer = "List")
-    public Iterable<User> getAllUsers(){
+    public Iterable<User> getAllUsers() {
         return this.userService.findAll();
     }
 
-    @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/{userId}")
-    public User getUser(@PathVariable long userId) {
-        return userService.findOne(userId);
+    public ResponseEntity<User> getUser(@PathVariable long userId) {
+
+        User user = userService.findOne(userId);
+        if (isNull(user)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)

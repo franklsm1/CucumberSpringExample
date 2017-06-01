@@ -85,11 +85,15 @@ public class UserStepdefs {
         }
     }
 
-    @Given("^a user exists in the db with the following info:")
+    @Given("^a user exists in the db with the following info if valid:")
     public void aUserExistsInTheDb(List<UserRequest> users) throws Throwable {
         user = users.get(0);
-        User newUser = usersService.save(user);
-        newId = newUser.getId();
+        if (!"".equals(user.getFirstName())) {
+            User newUser = usersService.save(user);
+            newId = newUser.getId();
+        } else {
+            newId = -7;
+        }
     }
 
     @When("^the client calls a GET to the \"([^\"]*)\" endpoint with a userId$")
@@ -101,7 +105,9 @@ public class UserStepdefs {
                 .andReturn()
                 .getResponse();
 
-        jsonResult = new JSONObject(latestResult.getContentAsString());
+        if (newId > 0) {
+            jsonResult = new JSONObject(latestResult.getContentAsString());
+        }
     }
 
     @Given("^users exists in the db with the following info:")
