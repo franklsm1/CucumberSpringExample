@@ -42,7 +42,7 @@ public class UsersControllerTest {
         MockHttpServletRequestBuilder request = get("/users/" + user.getId());
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.user.firstName", equalTo(user.getFirstName())))
-                .andExpect(jsonPath("$.user.lastName", equalTo(user.getLastName())));
+                .andExpect(jsonPath("$.firstName", equalTo(user.getFirstName())))
+                .andExpect(jsonPath("$.lastName", equalTo(user.getLastName())));
     }
 }

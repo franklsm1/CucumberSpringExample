@@ -15,7 +15,7 @@ public class ExceptionController {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleBadArgumentException(MethodArgumentNotValidException ex){
         BindingResult result = ex.getBindingResult();
-        return new ErrorResponse(result.getFieldErrors(), HttpStatus.BAD_REQUEST);
+        return new ErrorResponse(result.getFieldErrors());
     }
 
 }

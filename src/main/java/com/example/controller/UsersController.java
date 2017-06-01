@@ -3,7 +3,6 @@ package com.example.controller;
 
 import com.example.model.User;
 import com.example.model.UserRequest;
-import com.example.model.UserResponse;
 import com.example.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
@@ -29,15 +28,13 @@ public class UsersController extends ExceptionController {
 
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("/{userId}")
-    public UserResponse getUser(@PathVariable long userId) {
-        User user = userService.findOne(userId);
-        return new UserResponse(user, HttpStatus.OK);
+    public User getUser(@PathVariable long userId) {
+        return userService.findOne(userId);
     }
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping("")
-    public UserResponse postUser(@Valid @RequestBody UserRequest user) {
-        User newUser = this.userService.save(user);
-        return new UserResponse(newUser, HttpStatus.CREATED);
+    public User postUser(@Valid @RequestBody UserRequest user) {
+        return this.userService.save(user);
     }
 }

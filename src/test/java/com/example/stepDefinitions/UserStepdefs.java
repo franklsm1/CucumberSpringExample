@@ -72,18 +72,15 @@ public class UserStepdefs {
         jsonResult = new JSONObject(latestResult.getContentAsString());
     }
 
-    @Then("^the response has a status of (\\d+) and a message containing \"([^\"]*)\"$")
-    public void theResponseHasAStatusOfStatusAndAMessageContaining(int status, String message) throws Throwable {
+    @Then("^the response has a status of (\\d+)$")
+    public void theResponseHasAStatusOfStatus(int status) throws Throwable {
         assertThat(latestResult.getStatus(), is(status));
-        assertThat(jsonResult.get("message"), is(message));
     }
 
-    @And("^if the (\\d+) is (\\d+) the response has a \"([^\"]*)\" object with an \"([^\"]*)\" field$")
-    public void ifTheStatusIsATheResponseHasAnIdField(int expectedStatus, int successStatus, String object, String field) throws Throwable {
+    @And("^if the (\\d+) is (\\d+) the response has an \"([^\"]*)\" field$")
+    public void ifTheStatusIsATheResponseHasAnIdField(int expectedStatus, int successStatus, String field) throws Throwable {
         if (expectedStatus == successStatus) {
-            assertTrue(jsonResult.has(object));
-            JSONObject user = (JSONObject) jsonResult.get(object);
-            assertTrue(user.has(field));
+            assertTrue(jsonResult.has(field));
         }
     }
 

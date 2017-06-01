@@ -1,17 +1,14 @@
 package com.example.model;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
 
 import java.util.List;
 
-public class ErrorResponse extends AbstractResponse {
+public class ErrorResponse {
     private final List<FieldError> errors;
 
-    public ErrorResponse(List<FieldError> errors, HttpStatus httpStatus) {
+    public ErrorResponse(List<FieldError> errors) {
         this.errors = errors;
-        this.setStatus(httpStatus.value());
-        this.setMessage(httpStatus.getReasonPhrase());
     }
 
     public List<FieldError> getErrors() {

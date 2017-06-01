@@ -65,9 +65,9 @@ public class UsersControllerIT {
 
         this.mockMvc.perform(request)
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.user.firstName", equalTo(mockUser.get("firstName"))))
-                .andExpect(jsonPath("$.user.lastName", equalTo(mockUser.get("lastName"))))
-                .andExpect(jsonPath("$.user.id").exists());
+                .andExpect(jsonPath("$.firstName", equalTo(mockUser.get("firstName"))))
+                .andExpect(jsonPath("$.lastName", equalTo(mockUser.get("lastName"))))
+                .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
@@ -84,8 +84,8 @@ public class UsersControllerIT {
 
         this.mockMvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.user.firstName", equalTo(newUser.getFirstName())))
-                .andExpect(jsonPath("$.user.lastName", equalTo(newUser.getLastName())))
-                .andExpect(jsonPath("$.user.birthYear", equalTo(newUser.getBirthYear())));
+                .andExpect(jsonPath("$.firstName", equalTo(newUser.getFirstName())))
+                .andExpect(jsonPath("$.lastName", equalTo(newUser.getLastName())))
+                .andExpect(jsonPath("$.birthYear", equalTo(newUser.getBirthYear())));
     }
 }
