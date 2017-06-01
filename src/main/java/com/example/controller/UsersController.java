@@ -20,6 +20,7 @@ public class UsersController extends ExceptionController {
         this.userService = userService;
     }
 
+    @ResponseStatus(value = HttpStatus.OK)
     @GetMapping("")
     @ApiOperation(value = "Return all users.", response = User.class, responseContainer = "List")
     public Iterable<User> getAllUsers(){

@@ -19,7 +19,7 @@ public class User {
     private String birthYear;
 
     User() {
-
+        //Used by hibernate JPA
     }
 
     public User(String firstName, String lastName, String birthYear) {

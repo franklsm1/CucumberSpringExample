@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UsersController.class)
-public class UsersControllerTest {
+public class UsersControllerMockTest {
 
     @MockBean
     UsersRepository usersRepository;

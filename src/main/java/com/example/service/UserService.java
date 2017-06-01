@@ -10,7 +10,7 @@ public class UserService {
 
     private final UsersRepository usersRepository;
 
-    public UserService(UsersRepository usersRepository) {
+    UserService(UsersRepository usersRepository) {
         this.usersRepository = usersRepository;
     }
 

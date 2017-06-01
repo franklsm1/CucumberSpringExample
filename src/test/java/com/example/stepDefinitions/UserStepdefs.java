@@ -92,11 +92,6 @@ public class UserStepdefs {
         newId = newUser.getId();
     }
 
-    @Given("^users exists in the db with the following info:")
-    public void usersExistsInTheDb(List<UserRequest> users) throws Throwable {
-        users.forEach( user -> usersService.save(user));
-    }
-
     @When("^the client calls a GET to the \"([^\"]*)\" endpoint with a userId$")
     public void theClientCallsGetUsersWithId(String route) throws Throwable {
         MockHttpServletRequestBuilder request = get(route + "/" + newId)
@@ -107,6 +102,11 @@ public class UserStepdefs {
                 .getResponse();
 
         jsonResult = new JSONObject(latestResult.getContentAsString());
+    }
+
+    @Given("^users exists in the db with the following info:")
+    public void usersExistsInTheDb(List<UserRequest> users) throws Throwable {
+        users.forEach(user -> usersService.save(user));
     }
 
     @When("^the client calls a GET to the \"([^\"]*)\" endpoint$")
@@ -123,6 +123,6 @@ public class UserStepdefs {
 
     @And("^the response is an array with length (\\d+)$")
     public void theResponseIsAnArrayWithLength(int expectedSize) throws Throwable {
-            assertEquals(expectedSize, jsonArrayResult.length());
+        assertEquals(expectedSize, jsonArrayResult.length());
     }
 }

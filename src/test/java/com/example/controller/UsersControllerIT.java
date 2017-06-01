@@ -13,9 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -44,6 +46,7 @@ public class UsersControllerIT {
     }
 
     @Test
+    @Transactional(readOnly = true)
     public void testGetEmptyAllUsers() throws Exception {
         MockHttpServletRequestBuilder request = get("/users");
 
@@ -53,6 +56,8 @@ public class UsersControllerIT {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void testCreateUser() throws Exception {
         JSONObject mockUser = new JSONObject();
         mockUser.put("firstName", "Kim");
@@ -71,6 +76,8 @@ public class UsersControllerIT {
     }
 
     @Test
+    @Transactional
+    @Rollback
     public void testGetOneUser() throws Exception {
         String lastName = "Moon";
         String firstName = "Sun";
