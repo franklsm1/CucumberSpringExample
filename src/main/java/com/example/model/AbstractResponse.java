@@ -9,7 +9,7 @@ public class AbstractResponse {
         return status;
     }
 
-    public void setStatus(int status) {
+    void setStatus(int status) {
         this.status = status;
     }
 
@@ -17,7 +17,7 @@ public class AbstractResponse {
         return message;
     }
 
-    public void setMessage(String message) {
+    void setMessage(String message) {
         this.message = message;
     }
 }
