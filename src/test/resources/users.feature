@@ -10,7 +10,7 @@ Feature: Users creation and retrieval endpoint
       | <firstName> | <lastName> | <birthYear> |
     When a POST request to the "/users" endpoint is made with that user
     Then the response has a status of <status>
-    And if the <status> is 201 the response has an "id" field
+    And if <status> equals 201 the response has an "id" field
 
     Examples:
       | firstName | lastName | birthYear | status |
@@ -18,12 +18,12 @@ Feature: Users creation and retrieval endpoint
       | Todd      | Frank    | 00000     | 400    |
 
   Scenario Outline: client makes a GET request to the users endpoint with a userId
-    Given a user exists in the db with the following info if valid:
+    Given a user exists in the db with the following info:
       | firstName   | lastName   | birthYear   |
       | <firstName> | <lastName> | <birthYear> |
     When the client calls a GET to the "/users" endpoint with a userId
     Then the response has a status of <status>
-    And if the <status> is 200 the response has an "id" field
+    And if <status> equals 200 the response has an "id" field
 
     Examples:
       | firstName | lastName | birthYear | status |
@@ -32,7 +32,7 @@ Feature: Users creation and retrieval endpoint
       |           |          |           | 204    |
 
   Scenario: client makes a GET request to the users endpoint
-    Given users exists in the db with the following info:
+    Given two users exists in the db with the following info:
       | firstName | lastName | birthYear |
       | Bret      | Palmer   | 1950      |
       | Todd      | Park     | 1975      |

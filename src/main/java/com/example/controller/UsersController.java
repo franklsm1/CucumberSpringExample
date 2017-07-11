@@ -1,8 +1,8 @@
 package com.example.controller;
 
 
-import com.example.model.User;
-import com.example.model.UserRequest;
+import com.example.domain.User;
+import com.example.domain.UserRequest;
 import com.example.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;

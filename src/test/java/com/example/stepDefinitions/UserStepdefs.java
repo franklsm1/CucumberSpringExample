@@ -1,8 +1,8 @@
 package com.example.stepDefinitions;
 
 import com.example.UserGroupsApplication;
-import com.example.model.User;
-import com.example.model.UserRequest;
+import com.example.domain.User;
+import com.example.domain.UserRequest;
 import com.example.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import cucumber.api.java.Before;
@@ -34,13 +34,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @AutoConfigureMockMvc
 public class UserStepdefs {
 
+    private final ObjectMapper OBJ_MAPPER = new ObjectMapper();
+
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private UserService usersService;
-
-    private final ObjectMapper OBJ_MAPPER = new ObjectMapper();
 
     private MockHttpServletResponse latestResult;
     private JSONObject jsonResult;
@@ -78,14 +78,14 @@ public class UserStepdefs {
         assertThat(latestResult.getStatus(), is(status));
     }
 
-    @And("^if the (\\d+) is (\\d+) the response has an \"([^\"]*)\" field$")
+    @And("^if (\\d+) equals (\\d+) the response has an \"([^\"]*)\" field$")
     public void ifTheStatusIsATheResponseHasAnIdField(int expectedStatus, int successStatus, String field) throws Throwable {
         if (expectedStatus == successStatus) {
             assertTrue(jsonResult.has(field));
         }
     }
 
-    @Given("^a user exists in the db with the following info if valid:")
+    @Given("^a user exists in the db with the following info:")
     public void aUserExistsInTheDb(List<UserRequest> users) throws Throwable {
         user = users.get(0);
         if (!"".equals(user.getFirstName())) {
@@ -110,7 +110,7 @@ public class UserStepdefs {
         }
     }
 
-    @Given("^users exists in the db with the following info:")
+    @Given("^two users exists in the db with the following info:")
     public void usersExistsInTheDb(List<UserRequest> users) throws Throwable {
         users.forEach(user -> usersService.save(user));
     }

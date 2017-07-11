@@ -1,11 +1,10 @@
-package com.example.model;
+package com.example.domain;
 
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserTest {
-
     @Test
     public void testCreateUser() {
         String firstName = "Sean";

@@ -21,7 +21,12 @@ jacocoTestReport {
     afterEvaluate {
         classDirectories = files(classDirectories.files.collect {
             fileTree(dir: it,
-                    exclude: ['**/UserGroupsApplication**'])
+                    exclude: [
+                            '**/UserGroupsApplication**',
+                            '**/domain/ErrorResponse**',
+                            '**/domain/User**',
+                            '**/domain/UserRequest**'
+                    ])
         })
     }
 
@@ -76,7 +81,7 @@ jacocoTestReport {
             }
             logger.quiet("---------------------------------------------------------------")
             throw new GradleException("Code coverage failed")
-        } else{
+        } else {
             logger.quiet("-------------- Passed Code Coverage Checks --------------------")
             successes.each {
                 logger.quiet(it)

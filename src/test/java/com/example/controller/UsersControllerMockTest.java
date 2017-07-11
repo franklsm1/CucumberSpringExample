@@ -1,7 +1,7 @@
 package com.example.controller;
 
 
-import com.example.model.User;
+import com.example.domain.User;
 import com.example.repository.UsersRepository;
 import com.example.service.UserService;
 import org.junit.Test;
