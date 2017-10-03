@@ -10,9 +10,11 @@ Java spring application using Cucumber for acceptance tests and a MySQL db for s
 - `create database user_groups_test;`
 5) running the tests or starting the app will create the table structure for you, thank-you hibernate!
 
+**Warning:** Need to use gradle v2.12 and up to build this project successfully
+
 ### Gradle Commands:
-- Clean, build, run tests, and check code coverage: `gradle clean build`
-- Start the application on *http://localhost:7777*: `gradle bootrun`
+- Clean, build, run tests, and check code coverage: `./gradlew clean build`
+- Start the application on *http://localhost:7777*: `./gradlew bootrun`
 
 ### Swagger Page:
 - View the swagger UI when the app is running go to: *http://localhost:7777/swagger-ui.html*
